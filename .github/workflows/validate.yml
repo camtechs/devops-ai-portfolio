@@ -1,0 +1,31 @@
+
+name: Validate Portfolio
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify required files
+        run: |
+          test -f index.html
+          test -f style.css
+          test -f script.js
+
+      - name: Check JavaScript syntax
+        run: node --check script.js
+
+      - name: Validate project structure
+        run: |
+          grep -q 'id="projects"' index.html
+          grep -q 'id="about"' index.html
+          grep -q 'id="contact"' index.html
+
